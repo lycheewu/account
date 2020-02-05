@@ -90,16 +90,4 @@ public class JWTUtils {
         return claims;
     }
 
-    /**
-     * 获取部门ID departmentId
-     *
-     * @return
-     */
-//    protected String getDepartmentId() {
-//        String departmentIdStr = JWTUtils.getCookie(request, COOKIE_NAME_PROJECT_ID);
-//        if (Strings.isNullOrEmpty(departmentIdStr)) {
-//            return null;
-//        }
-//        return departmentIdStr;
-//    }
 }

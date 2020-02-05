@@ -15,11 +15,11 @@ import javax.annotation.Resource;
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Resource
-    private JWTUtils JWTUtils;
+    private JWTUtils jWTUtils;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor(JWTUtils))
+        registry.addInterceptor(new AuthInterceptor(jWTUtils))
                 // 默认处理所有api
                 .addPathPatterns("/api/**")
 

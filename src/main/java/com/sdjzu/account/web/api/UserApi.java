@@ -1,6 +1,5 @@
 package com.sdjzu.account.web.api;
 
-import com.sdjzu.account.dao.model.DepartmentDO;
 import com.sdjzu.account.dao.model.UserDO;
 import com.sdjzu.account.dao.repo.DepartmentRepo;
 import com.sdjzu.account.dao.repo.UserRepo;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.xml.transform.Result;
 import java.util.List;
 
 /**
@@ -27,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/user")
 @Slf4j
-public class UserApi {
+public class UserApi extends BaseApi {
     @Resource
     private JWTUtils jwtUtils;
 
@@ -42,6 +40,7 @@ public class UserApi {
 
     /**
      * 登录
+     *
      * @param loginVO
      * @return
      */
@@ -53,19 +52,21 @@ public class UserApi {
         //校验身份成功生成token返回
         UserDO userDO = new UserDO();
         userDO = userRepo.findByLoginName(loginVO.getLoginName());
-        String departmentId= userDO.getDepartmentId();
+        String departmentId = userDO.getDepartmentId();
         String token = jwtUtils.setToken(userDO.getUserId(), departmentId);
-        LoginVO loginVO1=BeanUtilEx.copyAndGet(userDO,LoginVO.class);
+        LoginVO loginVO1 = BeanUtilEx.copyAndGet(userDO, LoginVO.class);
         loginVO1.setToken(token);
         loginVO1.setDepartmentName(departmentRepo.findByDepartmentId(departmentId).getDepartmentName());
 
         return ResultVOUtil.success(loginVO1);
     }
 
-//    @GetMapping("/find")
-//    public ResultVO<List<LoginVO>> findAllUser(){
-//        List<UserDO> userDOS=userRepo.findAll();
-//        List<LoginVO> loginVOS=BeanUtilEx.copyAndGetList(userDOS,LoginVO.class);
-//        return ResultVOUtil.success(loginVOS);
-//    }
+    @GetMapping("/find")
+    public ResultVO<List<LoginVO>> findAllUser() {
+        List<UserDO> userDOS = userRepo.findAll();
+        List<LoginVO> loginVOS = BeanUtilEx.copyAndGetList(userDOS, LoginVO.class);
+        String userId = getUserId();
+        log.info("userId:" + userId);
+        return ResultVOUtil.success(loginVOS);
+    }
 }
