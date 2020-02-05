@@ -1,6 +1,6 @@
 package com.sdjzu.account.web.api;
 
-import ch.qos.logback.core.joran.util.beans.BeanUtil;
+import com.sdjzu.account.dao.model.DepartmentDO;
 import com.sdjzu.account.dao.model.UserDO;
 import com.sdjzu.account.dao.repo.DepartmentRepo;
 import com.sdjzu.account.dao.repo.UserRepo;
@@ -10,7 +10,6 @@ import com.sdjzu.account.utils.ResultVOUtil;
 import com.sdjzu.account.web.auth.JWTUtils;
 import com.sdjzu.account.web.vo.LoginVO;
 import com.sdjzu.account.web.vo.ResultVO;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.xml.transform.Result;
+import java.util.List;
 
 /**
  * @author lychee
@@ -52,7 +53,7 @@ public class UserApi {
         //校验身份成功生成token返回
         UserDO userDO = new UserDO();
         userDO = userRepo.findByLoginName(loginVO.getLoginName());
-        String departmentId=userDO.getDepartmentId();
+        String departmentId= userDO.getDepartmentId();
         String token = jwtUtils.setToken(userDO.getUserId(), departmentId);
         LoginVO loginVO1=BeanUtilEx.copyAndGet(userDO,LoginVO.class);
         loginVO1.setToken(token);
@@ -60,4 +61,11 @@ public class UserApi {
 
         return ResultVOUtil.success(loginVO1);
     }
+
+//    @GetMapping("/find")
+//    public ResultVO<List<LoginVO>> findAllUser(){
+//        List<UserDO> userDOS=userRepo.findAll();
+//        List<LoginVO> loginVOS=BeanUtilEx.copyAndGetList(userDOS,LoginVO.class);
+//        return ResultVOUtil.success(loginVOS);
+//    }
 }

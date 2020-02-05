@@ -22,7 +22,9 @@ public class UserServiceImpl implements UserService {
     @Resource
     private JdbcTemplate jdbcTemplate;
 
+    @Resource
     private UserRepo userRepo;
+
     @Override
     public UserDO findUserByName(String name) {
         return null;
@@ -35,7 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void checkLogin(String loginName, String loginPwd) {
-        UserDO userDO = userRepo.findByLoginName(loginName);
+        UserDO userDO =new UserDO();
+        List<UserDO> userInfos =userRepo.findAll();
+        userDO = userRepo.findByLoginName(loginName);
         if (userDO == null) {
             throw new AccountException(ResultEnum.USER_NOT_EXIST);
         }

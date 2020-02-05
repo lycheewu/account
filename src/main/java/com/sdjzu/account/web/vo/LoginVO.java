@@ -11,16 +11,16 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class LoginVO {
 
-    @JsonProperty(value = "登录名", required = true)
+    @JsonProperty(value = "loginName", required = true)
     @NotBlank
     private String loginName;
 
-    @JsonProperty(value = "登录密码", required = true)
+    @JsonProperty(value = "loginPwd", required = true)
     @NotBlank
     private String loginPwd;
 
-    @JsonProperty(value = "jurisdiction")
-    private String jurisdiction;
+    @JsonProperty(value = "user_role")
+    private String userRole;
 
     @JsonProperty(value = "token")
     private String token;

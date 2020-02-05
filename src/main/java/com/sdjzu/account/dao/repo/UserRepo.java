@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface UserRepo extends JpaRepository<UserDO,String> {
 
-    UserDO findByLoginName(String LoginName);
+    UserDO findByLoginName(String loginName);
 
     List<UserDO> findByDepartmentId(String departmentId);
 }

@@ -7,9 +7,23 @@ spring:
   jpa:
     show-sql: true
   jackson:
-    default-property-inclusion: non_null #ÉèÖÃÈ«¾Ö·µ»ØÖµÎªnullÊ±£¬²»·µ»Ø¸Ã×Ö¶Î£¬µ«ÊÇÈô´úÂëÖĞÓĞÊ¹ÓÃ@EnableWebMvcºóÊ§Ğ§
+    default-property-inclusion: non_null #è®¾ç½®å…¨å±€è¿”å›å€¼ä¸ºnullæ—¶ï¼Œä¸è¿”å›è¯¥å­—æ®µï¼Œä½†æ˜¯è‹¥ä»£ç ä¸­æœ‰ä½¿ç”¨@EnableWebMvcåå¤±æ•ˆ
 
 server:
   port: 3005
 #  servlet:
 #    context-path: /sell
+
+
+
+
+#logging:
+##  ç”¨åœ¨æœåŠ¡å™¨ä¸­
+##  file: /var/log/tomcat/sell/
+#
+#  level: debug
+##  æ—¥å¿—çš„è®°å½•å±‚çº§
+##  level:
+##    com.sdjzu.sell.LoggerTest: debug
+#  pattern:
+#    console: "%d - %msg%n"

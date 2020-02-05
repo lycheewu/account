@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @Entity
 @DynamicUpdate //动态更新时间
-@Table(name="user_info")
+@Table(name = "user_info")
 public class UserDO {
 
     /**
@@ -43,7 +43,7 @@ public class UserDO {
     /**
      * 菜单权限
      */
-    private Integer jurisdiction;
+    private Integer userRole;
 
     /**
      * 用户所在部门ID
@@ -53,7 +53,7 @@ public class UserDO {
     /**
      * 备注
      */
-    private String comment;
+    private String userComment;
 
     /**
      * 创建时间

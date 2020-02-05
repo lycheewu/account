@@ -37,8 +37,8 @@ public class UserVO {
     /**
      * 菜单权限
      */
-    @JsonProperty("jurisdiction")
-    private Integer jurisdiction;
+    @JsonProperty("userRole")
+    private Integer userRole;
 
     /**
      * 用户所在部门ID
