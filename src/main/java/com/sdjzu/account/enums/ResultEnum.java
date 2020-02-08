@@ -19,7 +19,10 @@ public enum ResultEnum {
 
     INVALID_LOGIN_STATUS(13,"登陆状态已过期，请重新登录!"),
 
-    ORDER_STATUS_ERROR(14,"订单状态不正确"),
+    /**
+     * department
+     */
+    DEPARTMENT_LIST_NOT_EMPTY(14,"该部门已关联员工,不可删除!"),
 
     ORDER_UPDATE_FAIL(15,"订单更新失败"),
 

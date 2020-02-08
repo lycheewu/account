@@ -24,9 +24,19 @@ public class DepartmentDO {
     private String departmentId;
 
     /**
+     * 所属公司ID
+     */
+    private String companyId;
+
+    /**
      * 部门名称
      */
     private String departmentName;
+
+    /**
+     * 部门描述
+     */
+    private String departmentDesc;
 
     /**
      * 创建时间

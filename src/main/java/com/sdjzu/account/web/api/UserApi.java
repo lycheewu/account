@@ -61,12 +61,12 @@ public class UserApi extends BaseApi {
         return ResultVOUtil.success(loginVO1);
     }
 
-    @GetMapping("/find")
-    public ResultVO<List<LoginVO>> findAllUser() {
-        List<UserDO> userDOS = userRepo.findAll();
-        List<LoginVO> loginVOS = BeanUtilEx.copyAndGetList(userDOS, LoginVO.class);
-        String userId = getUserId();
-        log.info("userId:" + userId);
-        return ResultVOUtil.success(loginVOS);
-    }
+//    @GetMapping("/find")
+//    public ResultVO<List<LoginVO>> findAllUser() {
+//        List<UserDO> userDOS = userRepo.findAll();
+//        List<LoginVO> loginVOS = BeanUtilEx.copyAndGetList(userDOS, LoginVO.class);
+//        String userId = getUserId();
+//        log.info("userId:" + userId);
+//        return ResultVOUtil.success(loginVOS);
+//    }
 }

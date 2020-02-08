@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * 从token中获取cookie的值
+ * 暂时未使用，好像不对
 * @author lychee
  * @date 2020/2/5 14:37
  */

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.annotation.Resource;
 
 /**
+ * 设置拦截权限（可以拦截什么类型的api）
  * @author mindgazer
  * @date 2019/06/26
  */

@@ -19,7 +19,7 @@ public class LoginVO {
     @NotBlank
     private String loginPwd;
 
-    @JsonProperty(value = "user_role")
+    @JsonProperty(value = "userRole")
     private String userRole;
 
     @JsonProperty(value = "token")

@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * API基础类
+ * API基础类 获取userID和departmentId
  * @author lychee
  * @date 2020/2/5 15:04
  */

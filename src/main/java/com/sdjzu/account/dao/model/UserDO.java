@@ -46,6 +46,13 @@ public class UserDO {
     private Integer userRole;
 
     /**
+     * 所属公司ID
+     *
+     * XX冗余字段XX 暂留
+     */
+    private String companyId;
+
+    /**
      * 用户所在部门ID
      */
     private String departmentId;
