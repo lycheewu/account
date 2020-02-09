@@ -1,22 +1,30 @@
 package com.sdjzu.account.web.api;
 
 import com.sdjzu.account.dao.model.UserDO;
+import com.sdjzu.account.dao.repo.CompanyRepo;
 import com.sdjzu.account.dao.repo.DepartmentRepo;
 import com.sdjzu.account.dao.repo.UserRepo;
+import com.sdjzu.account.enums.ResultEnum;
+import com.sdjzu.account.exception.AccountException;
 import com.sdjzu.account.service.UserService;
+import com.sdjzu.account.service.bo.UserBO;
+import com.sdjzu.account.service.bo.UserQuery;
 import com.sdjzu.account.utils.BeanUtilEx;
+import com.sdjzu.account.utils.KeyUtil;
 import com.sdjzu.account.utils.ResultVOUtil;
 import com.sdjzu.account.web.auth.JWTUtils;
 import com.sdjzu.account.web.vo.LoginVO;
 import com.sdjzu.account.web.vo.ResultVO;
+import com.sdjzu.account.web.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * @author lychee
@@ -37,6 +45,9 @@ public class UserApi extends BaseApi {
 
     @Resource
     private DepartmentRepo departmentRepo;
+
+    @Resource
+    private CompanyRepo companyRepo;
 
     /**
      * 登录
@@ -61,12 +72,94 @@ public class UserApi extends BaseApi {
         return ResultVOUtil.success(loginVO1);
     }
 
-//    @GetMapping("/find")
-//    public ResultVO<List<LoginVO>> findAllUser() {
-//        List<UserDO> userDOS = userRepo.findAll();
-//        List<LoginVO> loginVOS = BeanUtilEx.copyAndGetList(userDOS, LoginVO.class);
-//        String userId = getUserId();
-//        log.info("userId:" + userId);
-//        return ResultVOUtil.success(loginVOS);
-//    }
+    @GetMapping("/find")
+    public ResultVO<List<UserVO>> findUser(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size) {
+        UserQuery userQuery = new UserQuery();
+        if (Strings.isBlank(name)) {
+            name = "isEmpty";
+        }
+        userQuery.setName(name);
+        userQuery.setPage(page);
+        userQuery.setSize(size);
+        userQuery.setUserId(getUserId());
+        List<UserBO> userBOS = userService.findUser(userQuery);
+        BeanUtilEx.copyAndGetList(userBOS, UserVO.class);
+        List<UserVO> userVOS = userBOS.stream().map(
+                bo -> {
+                    UserVO userVO = BeanUtilEx.copyAndGet(bo, UserVO.class);
+                    userVO.setDepartmentName(
+                            departmentRepo.findByDepartmentId(
+                                    bo.getDepartmentId()).getDepartmentName());
+                    return userVO;
+                }
+        ).collect(Collectors.toList());
+        return ResultVOUtil.success(userVOS);
+    }
+
+    /**
+     * 生成登录名
+     * 生成规则是：公司名（这是运维人员命名的，要求尽量是英文缩写）+部门名称+用户权限+随机数2位
+     *
+     * @param userRole
+     * @param departmentId
+     * @return
+     */
+    @GetMapping("/register")
+    public ResultVO<String> findName(@RequestParam(value = "userRole") String userRole,
+                                     @RequestParam(value = "departmentId") String departmentId) {
+        //注意，在使用的时候默认只有老板有这个权限，老板的userId就是companyId
+        String name = companyRepo.findById(getUserId()).get().getCompanyName();
+        if (Strings.isEmpty(departmentId)) {
+            //随机生成5位随机数
+            departmentId = String.valueOf(new Random().nextInt(90000) + 10000);
+        }
+        name += departmentRepo.findByDepartmentId(departmentId).getDepartmentName();
+        if (Strings.isEmpty(userRole)) {
+            throw new AccountException(ResultEnum.USER_ROLE_NOT_EXIST);
+        }
+        //生成用户身份+两位随机数 足够容纳
+        name += userRole.toLowerCase() + new Random().nextInt(90) + 10;
+
+        return ResultVOUtil.success(name);
+    }
+
+    @PostMapping("/insert")
+    public ResultVO insertUser(@RequestBody UserVO userVO) {
+        if (Objects.nonNull(userRepo.findByLoginName(userVO.getLoginName()))) {
+            throw new AccountException(ResultEnum.USER_EXIST);
+        }
+        String companyId = userRepo.findById(getUserId()).get().getCompanyId();
+        UserBO userBO = BeanUtilEx.copyAndGet(userVO, UserBO.class);
+        userBO.setCompanyId(companyId);
+        userBO.setUserId(KeyUtil.genUniqueKey());
+        userService.insertUser(userBO);
+        return ResultVOUtil.success();
+    }
+
+    @PutMapping("/update")
+    public ResultVO updateUser(@RequestBody UserVO userVO) {
+        UserDO userDO = userRepo.findById(getUserId()).orElse(null);
+        UserBO userBO = BeanUtilEx.copyAndGet(userVO, UserBO.class);
+        if (Objects.nonNull(userDO)) {
+            userBO.setCompanyId(userDO.getCompanyId());
+//            userBO.setDepartmentId(userDO.getDepartmentId());
+            userService.insertUser(userBO);
+        } else {
+            throw new AccountException(ResultEnum.USER_NOT_EXIST);
+        }
+        return ResultVOUtil.success();
+    }
+
+    @DeleteMapping("/delete")
+    public ResultVO deleteUser(@RequestParam("userId") String userId) {
+        if (Objects.equals(userId, getUserId())) {
+            throw new AccountException(ResultEnum.USER_NOT_EMPTY);
+        }
+        userService.deleteUser(userId);
+        return ResultVOUtil.success();
+    }
+
 }

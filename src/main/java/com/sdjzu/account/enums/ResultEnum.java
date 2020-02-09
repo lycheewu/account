@@ -19,6 +19,12 @@ public enum ResultEnum {
 
     INVALID_LOGIN_STATUS(13,"登陆状态已过期，请重新登录!"),
 
+    USER_NOT_EMPTY(14,"该用户关联公司，不可删除!"),
+
+    USER_EXIST(15,"用户名已存在,不可使用!"),
+
+    USER_ROLE_NOT_EXIST(16,"请先选择用户权限!"),
+
     /**
      * department
      */

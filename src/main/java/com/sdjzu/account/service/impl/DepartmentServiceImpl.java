@@ -68,16 +68,13 @@ public class DepartmentServiceImpl implements DepartmentService {
             departmentDOS = jdbcTemplate
                     .query(sql, new BeanPropertyRowMapper<>(DepartmentDO.class));
         }
-        List<DepartmentBO> departmentBOS = BeanUtilEx.copyAndGetList(departmentDOS, DepartmentBO.class);
-
-        return departmentBOS;
+        return BeanUtilEx.copyAndGetList(departmentDOS, DepartmentBO.class);
     }
 
     @Override
     public DepartmentBO findDepartment(String departmentId) {
         DepartmentDO departmentDO = departmentRepo.findByDepartmentId(departmentId);
-        DepartmentBO departmentBO = BeanUtilEx.copyAndGet(departmentDO, DepartmentBO.class);
-        return departmentBO;
+        return BeanUtilEx.copyAndGet(departmentDO, DepartmentBO.class);
     }
 
     @Override

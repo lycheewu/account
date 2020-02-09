@@ -36,14 +36,14 @@ public class UserDO {
     private String nickName;
 
     /**
-     * 用户住址
+     * 用户职位
      */
     private String userPosition;
 
     /**
      * 菜单权限
      */
-    private Integer userRole;
+    private String userRole;
 
     /**
      * 所属公司ID
@@ -60,7 +60,7 @@ public class UserDO {
     /**
      * 备注
      */
-    private String userComment;
+    private String comment;
 
     /**
      * 创建时间

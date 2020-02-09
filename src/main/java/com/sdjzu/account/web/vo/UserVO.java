@@ -23,13 +23,19 @@ public class UserVO {
     private String loginName;
 
     /**
+     * 登录密码
+     */
+    @JsonProperty("loginPwd")
+    private String loginPwd;
+
+    /**
      * 昵称
      */
     @JsonProperty("nickName")
     private String nickName;
 
     /**
-     * 用户住址
+     * 用户职位
      */
     @JsonProperty("userPosition")
     private String userPosition;
@@ -38,13 +44,19 @@ public class UserVO {
      * 菜单权限
      */
     @JsonProperty("userRole")
-    private Integer userRole;
+    private String userRole;
 
     /**
      * 用户所在部门ID
      */
     @JsonProperty("departmentId")
     private String departmentId;
+
+    /**
+     * 用户所在部门名称
+     */
+    @JsonProperty("departmentName")
+    private String departmentName;
 
     /**
      * 备注

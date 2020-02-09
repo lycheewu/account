@@ -55,7 +55,7 @@ public class DepartmentApi extends BaseApi {
         return ResultVOUtil.success(departmentVOS);
     }
 
-    @PutMapping("/insert")
+    @PostMapping("/insert")
     public ResultVO insetDepartment(@RequestBody DepartmentVO departmentVO) {
         String companyId = userRepo.findById(getUserId()).get().getCompanyId();
         DepartmentBO departmentBO = BeanUtilEx.copyAndGet(departmentVO, DepartmentBO.class);
@@ -65,7 +65,7 @@ public class DepartmentApi extends BaseApi {
         return ResultVOUtil.success();
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ResultVO updateDepartment(@RequestBody DepartmentVO departmentVO) {
         DepartmentBO departmentBO = BeanUtilEx.copyAndGet(departmentVO, DepartmentBO.class);
         departmentService.updateDepartment(departmentBO);
